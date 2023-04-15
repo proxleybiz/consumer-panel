@@ -54,10 +54,9 @@ a {
 }
 
 .authentication-heading {
-  color:#D5EEFC;
+  color: #d5eefc;
   text-align: center;
   font-weight: 800;
-
 }
 
 .gradient-text {
@@ -109,7 +108,7 @@ button {
 }
 
 .orderDownloadBtn:hover {
-  color:white;
+  color: white;
 }
 
 *::-webkit-scrollbar {
@@ -119,10 +118,10 @@ button {
 
 *::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.1);
-  
 }
 
 *::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 20px;
 }
+
