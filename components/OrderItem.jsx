@@ -1,10 +1,23 @@
-import React from "react";
-import { Accordion, Card, Container, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Accordion, Button, Card, Container, Row } from "react-bootstrap";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import setAuthToken from "../utils/setAccessToken";
+import axios from "axios";
+import { toast } from "react-toastify";
+import loadScript from "../utils/loadScript";
+import userContext from "../context/user/userContext";
+import { useContext } from "react";
+import { useRouter } from "next/router";
+import OrderInfoModal from "./OrderInfoModal";
 
 function OrderItem({ order }) {
+  const [loading, setLoading] = useState(false);
+  const userCtx = useContext(userContext);
+  const navigate = useRouter();
+  const id = order._id;
   const date = new Date(order?.order_on).toLocaleDateString();
+  const [show, setShow] = useState(false);
   let value = 0;
   switch (order.order_status) {
     case "ordered":
@@ -28,6 +41,113 @@ function OrderItem({ order }) {
       }
       break;
   }
+  const pay = async () => {
+    try {
+      setLoading(true);
+      if (
+        localStorage.getItem("accessToken") === null ||
+        localStorage.getItem("accessToken") === undefined
+      ) {
+        toast.error("Invalid Token");
+        return;
+      } else {
+        setAuthToken(localStorage.getItem("accessToken"));
+      }
+      const res = await axios.post(
+        "/api/repeatOrder",
+        {
+          id: id,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+      if (!res.data.status) {
+        return toast.error(res.data.msg);
+      }
+      const order = res.data.data.order;
+      const ord_object = res.data.data.ord_object;
+
+      await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+      const options = {
+        key: "rzp_test_PJfxwmlLINbRMG",
+        amount: ord_object.totalAmount.toString(),
+        currency: "INR",
+        name: "Proxley",
+        description: "Place Order",
+        order_id: order.id,
+        handler: async function (response) {
+          if (!response.razorpay_payment_id) {
+            setLoading(false);
+            return;
+          }
+          userCtx.validateOrder(
+            { id: ord_object._id, payment: response },
+            () => {
+              navigate.push(
+                {
+                  pathname: "/success",
+                  query: { id: ord_object._id },
+                },
+                "/success"
+              );
+            },
+            (err) => {
+              navigate.push(
+                {
+                  pathname: "/cancel",
+                  query: {
+                    pid: response.razorpay_payment_id,
+                    oid: ord_object._id,
+                  },
+                },
+                "/cancel"
+              );
+            }
+          );
+        },
+        modal: {
+          ondismiss: async function () {
+            if (
+              localStorage.getItem("accessToken") === null ||
+              localStorage.getItem("accessToken") === undefined
+            ) {
+              if (error) {
+                error("Invalid Token");
+              }
+              return;
+            } else {
+              setAuthToken(localStorage.getItem("accessToken"));
+            }
+            await axios.post(
+              "/api/deleteOrder",
+              { id: ord_object._id },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                },
+              }
+            );
+            setLoading(false);
+          },
+        },
+        prefill: {
+          name: userCtx.user?.name,
+          email: userCtx.user?.email,
+          contact: userCtx.user?.phoneNumber,
+        },
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    } catch (err) {
+      toast.error(err.toString());
+    }
+  };
   return (
     <Card
       className="w-100 border-right-0 border-left-0 rounded bg-transparent mt-4"
@@ -137,10 +257,39 @@ function OrderItem({ order }) {
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
-        <button className="orderDownloadBtn" style={{border:"none",background:"crimson",color:"white",marginTop:"10px",borderRadius:"6px",padding:"10px 20px"}}>
-          <a href="../assets/orderReport.pdf" style={{textDecoration:"none",color:"white"}} download>Download Order Preview</a>
-        </button>
+        <Button
+          variant="warning"
+          className="m-2 text-white"
+          onClick={(e) => {
+            e.preventDefault();
+            pay();
+          }}
+        >
+          {loading ? (
+            <div class="spinner-border" role="status">
+              <span class="sr-only"></span>
+            </div>
+          ) : (
+            "Repeat Order"
+          )}
+        </Button>
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            setShow(true);
+          }}
+        >
+          {" "}
+          View Order{" "}
+        </Button>
       </Card.Body>
+      <OrderInfoModal
+        show={show}
+        handleClose={() => {
+          setShow(false);
+        }}
+        order={order}
+      />
     </Card>
   );
 }

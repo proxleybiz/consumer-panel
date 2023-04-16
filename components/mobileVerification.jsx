@@ -5,6 +5,7 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from "../firebase";
 import userContext from "../context/user/userContext";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 function MobileVerification() {
   const router = useRouter();
@@ -18,7 +19,7 @@ function MobileVerification() {
     try {
       e.preventDefault();
       if (phone.length !== 10) {
-        return alert("Invalid Phone Number");
+        return toast.error("Invalid Phone Number");
       }
       setLoading(true);
       if (!window.recaptchaVerifier) {
@@ -34,7 +35,7 @@ function MobileVerification() {
         window.recaptchaVerifier
       );
       setFinal(res);
-      alert("OTP Sent");
+      toast.success("OTP Sent");
       setMode(!mode);
       setLoading(false);
     } catch (err) {
@@ -53,12 +54,12 @@ function MobileVerification() {
           setLoading(false);
         },
         (err) => {
-          alert(err);
+          toast.error(err);
           setLoading(false);
         }
       );
     } catch (err) {
-      alert("Invalid Code");
+      toast.error("Invalid Code");
       setLoading(false);
     }
   };

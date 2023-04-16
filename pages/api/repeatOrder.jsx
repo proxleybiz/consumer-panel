@@ -18,20 +18,22 @@ const func = async (req, res) => {
     if (!auth.res) {
       return res.json(resObj(false, null, auth.msg));
     }
-    const { amount, subTotal, product, address, quantity, recommendation } =
-      req.body;
+    const { id } = req.body;
+    const prev = await Order.findById(id);
+    if (!prev) {
+      return res.json(resObj(false, null, "Order not Found"));
+    }
     const ord_object = Order({
       userId: req.user._id,
-      totalAmount: amount,
-      subTotal,
-      product: product,
-      address,
+      totalAmount: prev.totalAmount,
+      subTotal: prev.subTotal,
+      product: prev.product,
+      address: prev.address,
       payment_status: "pending",
       payment_details: null,
       order_status: "pending",
       order_on: Date.now(),
-      quantity: parseInt(quantity),
-      recommendation,
+      quantity: prev.quantity,
     });
     await ord_object.save();
 
@@ -41,7 +43,7 @@ const func = async (req, res) => {
     });
 
     const ord_options = {
-      amount: parseInt(amount) * 100,
+      amount: parseInt(prev.totalAmount) * 100,
       currency: "INR",
       payment_capture: 1,
     };
@@ -49,6 +51,7 @@ const func = async (req, res) => {
     const order = await instance.orders.create(ord_options);
     res.json(resObj(true, { order, ord_object }, "Order created"));
   } catch (err) {
+    console.log(err);
     return res.json(resObj(false, null, err.toString()));
   }
 };

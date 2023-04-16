@@ -57,9 +57,11 @@ function Dashboard({ index, setIndex, customization, setCustomization }) {
   return (
     <Container
       className="container-lg"
-      style={{ fontFamily: "regular", marginLeft: "0px",marginTop:"10px" }}
+      style={{ fontFamily: "regular", marginLeft: "0px", marginTop: "10px" }}
     >
-      <h1 style={{color:"white",fontWeight:"bold"}}>Please select an option</h1>
+      <h1 style={{ color: "white", fontWeight: "bold" }}>
+        Please select an option
+      </h1>
       {filters.catOne.trim() !== "" &&
       filters.catTwo.trim() !== "" &&
       filters.catThree.trim() !== "" &&
@@ -148,7 +150,7 @@ function Dashboard({ index, setIndex, customization, setCustomization }) {
           </Row>
           {filters.catOne !== "" && (
             <Fragment>
-              <h2 className="fs-3 my-4" style={{color:"white"}}>
+              <h2 className="fs-3 my-4" style={{ color: "white" }}>
                 Select your {filters.catOne} category
               </h2>
               <Row className="justify-content-center">
@@ -181,27 +183,32 @@ function Dashboard({ index, setIndex, customization, setCustomization }) {
                   );
                 })}
               </Row>
-              <Form.Group>
-                <Form.Label className="text-white"> Select Type of {filters.catOne}</Form.Label>
-                <Form.Select
-                  value={filters.catThree}
-                  onChange={(e) => {
-                    setFilters({ ...filters, catThree: e.target.value });
-                  }}
-                >
-                  <option value=""> Select </option>
-                  {getThirdFilter(filters.catTwo, filters.catOne).map(
-                    (i, key) => (
-                      <option value={i.name} key={key}>
-                        {i.name}
-                      </option>
-                    )
-                  )}
-                </Form.Select>
-              </Form.Group>
+              {filters.catTwo.trim() !== "" && (
+                <Form.Group>
+                  <Form.Label className="text-white">
+                    {" "}
+                    Select Type of {filters.catOne}
+                  </Form.Label>
+                  <Form.Select
+                    value={filters.catThree}
+                    onChange={(e) => {
+                      setFilters({ ...filters, catThree: e.target.value });
+                    }}
+                  >
+                    <option value=""> Select </option>
+                    {getThirdFilter(filters.catTwo, filters.catOne).map(
+                      (i, key) => (
+                        <option value={i.name} key={key}>
+                          {i.name}
+                        </option>
+                      )
+                    )}
+                  </Form.Select>
+                </Form.Group>
+              )}
             </Fragment>
           )}
-          {filters.catOne && (
+          {filters.catOne && filters.catTwo && filters.catThree && (
             <Button
               variant="primary"
               className="mt-4"

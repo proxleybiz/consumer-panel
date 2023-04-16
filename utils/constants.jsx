@@ -262,12 +262,7 @@ export const CUSTOMIZATION = [
         name: "Select the type best matching your product",
         type: "DROP",
         cost: 1,
-        values: [
-          "Shoes",
-          "Electronic Gadgets",
-          "Carton Boxes",
-          "Eatables",
-        ],
+        values: ["Shoes", "Electronic Gadgets", "Carton Boxes", "Eatables"],
       },
       {
         name: "Type of Paper",
@@ -474,6 +469,12 @@ export const CUSTOMIZATION = [
       },
       {
         name: "Upload a photo of your design",
+        type: "FILE",
+        cost: 1,
+        values: [],
+      },
+      {
+        name: "Upload a photo of your text",
         type: "FILE",
         cost: 1,
         values: [],

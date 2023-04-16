@@ -329,6 +329,74 @@ function UserState(props) {
       }
     }
   };
+
+  const updateAddress = async (data, success = null, error = null) => {
+    try {
+      if (
+        localStorage.getItem("accessToken") === null ||
+        localStorage.getItem("accessToken") === undefined
+      ) {
+        if (error) {
+          error("Invalid Token");
+        }
+        return;
+      } else {
+        setAuthToken(localStorage.getItem("accessToken"));
+      }
+      const res = await axios.post(
+        "/api/updateAddress",
+        { address: data },
+        config
+      );
+      if (res.data.status) {
+        dispatch({ type: ADD_ADDRESS, payload: res.data.data });
+        if (success) {
+          success();
+        }
+      } else {
+        localStorage.removeItem("accessToken");
+        if (error) {
+          error(res.data.msg);
+        }
+      }
+    } catch (err) {
+      if (error) {
+        error(err);
+      }
+    }
+  };
+
+  const deleteAddress = async (id, success = null, error = null) => {
+    try {
+      if (
+        localStorage.getItem("accessToken") === null ||
+        localStorage.getItem("accessToken") === undefined
+      ) {
+        if (error) {
+          error("Invalid Token");
+        }
+        return;
+      } else {
+        setAuthToken(localStorage.getItem("accessToken"));
+      }
+      const res = await axios.post("/api/deleteAddress", { id }, config);
+      if (res.data.status) {
+        dispatch({ type: ADD_ADDRESS, payload: res.data.data });
+        if (success) {
+          success();
+        }
+      } else {
+        localStorage.removeItem("accessToken");
+        if (error) {
+          error(res.data.msg);
+        }
+      }
+    } catch (err) {
+      if (error) {
+        error(err);
+      }
+    }
+  };
   return (
     <UserContext.Provider
       value={{
@@ -345,6 +413,8 @@ function UserState(props) {
         register,
         updateProfile,
         addAddress,
+        deleteAddress,
+        updateAddress,
       }}
     >
       {props.children}

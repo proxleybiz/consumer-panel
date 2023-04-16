@@ -31,6 +31,7 @@ const OrdersSchema = new mongoose.Schema({
   order_status: {
     type: String,
   },
+  recommendation: { type: Object },
   address: {
     addressTitle: {
       type: String,

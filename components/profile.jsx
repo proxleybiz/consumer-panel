@@ -4,6 +4,7 @@ import userContext from "../context/user/userContext";
 import Loading from "./Loading";
 import UpdatePasswordModal from "./UpdatePasswordModal";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 function Profile() {
   const router = useRouter();
@@ -25,6 +26,16 @@ function Profile() {
     name: userCtx.user?.name,
   });
 
+  const [edit, setEdit] = useState({
+    companyName: false,
+    companyGST: false,
+    businessCategory: false,
+    businessAddress: false,
+    designation: false,
+    accountNumber: false,
+    name: false,
+  });
+
   const updatePassword = () => {
     setShow(false);
     setLoading(true);
@@ -37,6 +48,7 @@ function Profile() {
           oldPassword: "",
           confirmPassword: "",
         });
+        toast.success("Password Updated");
       },
       (err) => {
         setLoading(false);
@@ -45,7 +57,7 @@ function Profile() {
           oldPassword: "",
           confirmPassword: "",
         });
-        alert(err);
+        toast.error(err);
       }
     );
   };
@@ -58,7 +70,7 @@ function Profile() {
     const temp = Object.keys(profile);
     for (let i = 0; i < temp.length; i++) {
       if (profile[temp[i]].trim() === "") {
-        alert(`Profile Incomplete`);
+        toast.error(`Profile Incomplete`);
         return;
       }
     }
@@ -99,10 +111,7 @@ function Profile() {
           {!userCtx.user || loading ? (
             <Loading />
           ) : (
-            <Card
-              className="w-100 rounded p-3"
-              style={{ background: "black" }}
-            >
+            <Card className="w-100 rounded p-3" style={{ background: "black" }}>
               <Card.Body
                 className="d-flex flex-column align-items-start"
                 style={{ gap: "1rem" }}
@@ -114,7 +123,6 @@ function Profile() {
                   >
                     Configure your Profile
                   </h1>
-  
                 </Row>
                 <div
                   style={{ gap: "5px" }}
@@ -129,13 +137,13 @@ function Profile() {
                   disabled
                   value={userCtx.user?.email}
                   className=""
-                  style={{ fontFamily: "regular",background:"#f9eec4" }}
+                  style={{ fontFamily: "regular", background: "#f9eec4" }}
                 />
                 <Form.Control
                   disabled
                   value={userCtx.user?.phoneNumber}
                   className=""
-                  style={{ fontFamily: "regular",background:"#f9eec4" }}
+                  style={{ fontFamily: "regular", background: "#f9eec4" }}
                 />
                 <Form.Control
                   disabled
@@ -144,89 +152,214 @@ function Profile() {
                     new Date(userCtx.user?.joinedOn).toLocaleDateString()
                   }
                   className=""
-                  style={{ fontFamily: "regular",background:"#f9eec4" }}
+                  style={{ fontFamily: "regular", background: "#f9eec4" }}
                 />
                 <Form.Group className="w-100">
-                  <Form.Label className="text-white"> Username </Form.Label>
+                  <div
+                    className="d-flex align-items-center"
+                    style={{ gap: "10px" }}
+                  >
+                    <Form.Label className="text-white"> Username </Form.Label>
+                    <button
+                      className="bg-transparent border-0 p-2"
+                      style={{ color: "blue" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setEdit({ ...edit, name: true });
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </div>
+
                   <Form.Control
                     value={profile.name}
                     className=" w-100"
-                    style={{ fontFamily: "regular",background:"#f9eec4" }}
+                    style={{ fontFamily: "regular", background: "#f9eec4" }}
                     name="name"
                     placeholder="Username"
                     onChange={changeHandler}
+                    disabled={!edit.name}
                   />
                 </Form.Group>
                 <Form.Group className="w-100">
-                  <Form.Label className="text-white"> Company Name </Form.Label>
+                  <div
+                    className="d-flex align-items-center"
+                    style={{ gap: "10px" }}
+                  >
+                    <Form.Label className="text-white">Company Name</Form.Label>
+                    <button
+                      className="bg-transparent border-0 p-2"
+                      style={{ color: "blue" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setEdit({ ...edit, companyName: true });
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </div>
+
                   <Form.Control
                     value={profile.companyName}
                     className=" w-100"
-                    style={{ fontFamily: "regular",background:"#f9eec4" }}
+                    style={{ fontFamily: "regular", background: "#f9eec4" }}
                     name="companyName"
                     placeholder="Company Name"
                     onChange={changeHandler}
+                    disabled={!edit.companyName}
                   />
                 </Form.Group>
                 <Form.Group className="w-100">
-                  <Form.Label className="text-white"> Company GST </Form.Label>
+                  <div
+                    className="d-flex align-items-center"
+                    style={{ gap: "10px" }}
+                  >
+                    <Form.Label className="text-white">
+                      {" "}
+                      Company GST{" "}
+                    </Form.Label>
+                    <button
+                      className="bg-transparent border-0 p-2"
+                      style={{ color: "blue" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setEdit({ ...edit, companyGST: true });
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </div>
+
                   <Form.Control
                     value={profile.companyGST}
                     className=" w-100"
-                    style={{ fontFamily: "regular",background:"#f9eec4" }}
+                    style={{ fontFamily: "regular", background: "#f9eec4" }}
                     name="companyGST"
                     placeholder="Company GST"
                     onChange={changeHandler}
+                    disabled={!edit.companyGST}
                   />
                 </Form.Group>
                 <Form.Group className="w-100">
-                  <Form.Label className="text-white">
-                    Business Category
-                  </Form.Label>
+                  <div
+                    className="d-flex align-items-center"
+                    style={{ gap: "10px" }}
+                  >
+                    <Form.Label className="text-white">
+                      Business Category
+                    </Form.Label>
+                    <button
+                      className="bg-transparent border-0 p-2"
+                      style={{ color: "blue" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setEdit({ ...edit, businessCategory: true });
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </div>
+
                   <Form.Control
                     value={profile.businessCategory}
                     className=" w-100"
-                    style={{ fontFamily: "regular",background:"#f9eec4" }}
+                    style={{ fontFamily: "regular", background: "#f9eec4" }}
                     name="businessCategory"
                     placeholder="Business Category"
                     onChange={changeHandler}
+                    disabled={!edit.businessCategory}
                   />
                 </Form.Group>
                 <Form.Group className="w-100">
-                  <Form.Label className="text-white">
-                    Business Address
-                  </Form.Label>
+                  <div
+                    className="d-flex align-items-center"
+                    style={{ gap: "10px" }}
+                  >
+                    <Form.Label className="text-white">
+                      Business Address
+                    </Form.Label>
+                    <button
+                      className="bg-transparent border-0 p-2"
+                      style={{ color: "blue" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setEdit({ ...edit, businessAddress: true });
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </div>
+
                   <Form.Control
                     value={profile.businessAddress}
                     className=" w-100"
-                    style={{ fontFamily: "regular",background:"#f9eec4" }}
+                    style={{ fontFamily: "regular", background: "#f9eec4" }}
                     name="businessAddress"
                     placeholder="Business Address"
                     onChange={changeHandler}
+                    disabled={!edit.businessAddress}
                   />
                 </Form.Group>
                 <Form.Group className="w-100">
-                  <Form.Label className="text-white"> Designation </Form.Label>
+                  <div
+                    className="d-flex align-items-center"
+                    style={{ gap: "10px" }}
+                  >
+                    <Form.Label className="text-white">
+                      {" "}
+                      Designation{" "}
+                    </Form.Label>
+                    <button
+                      className="bg-transparent border-0 p-2"
+                      style={{ color: "blue" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setEdit({ ...edit, designation: true });
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </div>
+
                   <Form.Control
                     value={profile.designation}
                     className=" w-100"
-                    style={{ fontFamily: "regular",background:"#f9eec4" }}
+                    style={{ fontFamily: "regular", background: "#f9eec4" }}
                     name="designation"
                     placeholder="Designation"
                     onChange={changeHandler}
+                    disabled={!edit.designation}
                   />
                 </Form.Group>
                 <Form.Group className="w-100">
-                  <Form.Label className="text-white">
-                    Bank Account Number
-                  </Form.Label>
+                  <div
+                    className="d-flex align-items-center"
+                    style={{ gap: "10px" }}
+                  >
+                    <Form.Label className="text-white">
+                      Bank Account Number
+                    </Form.Label>
+                    <button
+                      className="bg-transparent border-0 p-2"
+                      style={{ color: "blue" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setEdit({ ...edit, accountNumber: true });
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </div>
+
                   <Form.Control
                     value={profile.accountNumber}
                     className=" w-100"
-                    style={{ fontFamily: "regular",background:"#f9eec4" }}
+                    style={{ fontFamily: "regular", background: "#f9eec4" }}
                     name="accountNumber"
                     placeholder="Bank Account Number"
                     onChange={changeHandler}
+                    disabled={!edit.accountNumber}
                   />
                 </Form.Group>
                 <Button

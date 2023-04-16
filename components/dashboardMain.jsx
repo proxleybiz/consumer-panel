@@ -16,6 +16,7 @@ import dynamic from "next/dynamic";
 import Loading from "./Loading";
 import Orders from "./orders";
 import Address from "./Address";
+import { toast } from "react-toastify";
 const Dashboard = dynamic(() => import("./dashboard"), { ssr: false });
 const Profile = dynamic(() => import("./profile"), { ssr: false });
 const MobileVerification = dynamic(() => import("./mobileVerification"), {
@@ -112,7 +113,7 @@ function DashboardMain() {
         <Fragment>
           {userCtx.user && userCtx.user.phoneNumber.trim() !== "" ? (
             <Row style={{marginTop:"10px"}}>
-              <Col sm={0} md={4}>
+              <Col sm={12} md={4}>
                 <div
                   className="d-flex flex-column rounded p-2"
                   style={{
@@ -138,7 +139,7 @@ function DashboardMain() {
                         return;
                       }
                       if (!userCtx.user?.profileCompleted) {
-                        alert("Please complete your profile");
+                        toast.error("Please complete your profile");
                         return;
                       }
                       setSelectedTab("Profile");
@@ -160,7 +161,7 @@ function DashboardMain() {
                         return;
                       }
                       if (!userCtx.user?.profileCompleted) {
-                        alert("Please complete your profile");
+                        toast.error("Please complete your profile");
                         return;
                       }
                       setSelectedTab("Dashboard");
@@ -214,7 +215,7 @@ function DashboardMain() {
                         return;
                       }
                       if (!userCtx.user?.profileCompleted) {
-                        alert("Please complete your profile");
+                        toast.error("Please complete your profile");
                         return;
                       }
                       setSelectedTab("Orders");
@@ -236,7 +237,7 @@ function DashboardMain() {
                         return;
                       }
                       if (!userCtx.user?.profileCompleted) {
-                        alert("Please complete your profile");
+                        toast.error("Please complete your profile");
                         return;
                       }
                       setSelectedTab("Addresses");

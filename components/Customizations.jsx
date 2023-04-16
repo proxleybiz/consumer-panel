@@ -7,6 +7,7 @@ import { SketchPicker } from "react-color";
 import { FILTER_ONE, PRINTING } from "../utils/constants";
 import left from "../imgs/left-arrow.png";
 import right from "../imgs/right-arrow.png";
+import { toast } from "react-toastify";
 
 function Customizations({
   filters,
@@ -18,20 +19,21 @@ function Customizations({
 }) {
   const img = FILTER_ONE.find((i) => i.name === filters.catOne)?.img;
   const [show, setShow] = useState(false);
-  const [recShow,setRecShow] = useState(false);
-  const [thanksModalShow,setThanksModalShow] = useState(false);
+  const [recShow, setRecShow] = useState(false);
+  const [recommendation, setRecommendation] = useState(null);
+  const [thanksModalShow, setThanksModalShow] = useState(false);
   const validateData = () => {
     if (
       filters.catOne === "" ||
       filters.catTwo === "" ||
       filters.catThree === ""
     ) {
-      return alert("Please select packaging type and format");
+      return toast.error("Please select packaging type and format");
     }
 
     for (let i = 0; i < customization.length; i++) {
       if (customization[i].selectedValue.toString().trim() === "") {
-        alert(customization[i].name);
+        toast.error(customization[i].name);
         return;
       }
     }
@@ -108,12 +110,13 @@ function Customizations({
               value={
                 customization.find((c) => c.name === item.name)?.selectedValue
               }
+              type="number"
               style={{ flex: "1" }}
               onChange={(e) => {
                 setCustomization(
                   customization.map((c) => {
                     if (c.name === item.name) {
-                      return { ...c, selectedValue: e.target.value };
+                      return { ...c, selectedValue: e.target.value.toString() };
                     }
                     return c;
                   })
@@ -176,7 +179,7 @@ function Customizations({
   };
   return (
     <Fragment>
-      <h2 className="fs-3 my-4" style={{color:"white"}}>
+      <h2 className="fs-3 my-4" style={{ color: "white" }}>
         Customize your {filters.catOne}
       </h2>
       <Row>
@@ -221,7 +224,7 @@ function Customizations({
                       customization[index].selectedValue.toString().trim() ===
                       ""
                     ) {
-                      alert(customization[index].name);
+                      toast.error(customization[index].name);
                       return;
                     }
                     setIndex(Math.min(index + 1, customization.length - 1));
@@ -248,22 +251,38 @@ function Customizations({
             handleClose={() => {
               setShow(false);
             }}
+            recommendation={recommendation}
             customization={customization}
             filters={filters}
           />
-          <RecommendationModal show={recShow} handleClose={() => {
+          <RecommendationModal
+            show={recShow}
+            handleClose={() => {
               setRecShow(false);
-            }} 
-            handleThankyouModalOpen={()=>{
-                setThanksModalShow(true);
+            }}
+            setRecommendation={(data) => {
+              setRecommendation(data);
+            }}
+            handleThankyouModalOpen={() => {
+              setThanksModalShow(true);
             }}
           />
-          <ThankYouModal show={thanksModalShow} handleClose={()=>{
-            setThanksModalShow(false);
-          }} />
-
+          <ThankYouModal
+            show={thanksModalShow}
+            handleClose={() => {
+              setThanksModalShow(false);
+            }}
+          />
         </Col>
-        <Col sm={3} className="d-flex flex-column align-items-center" style={{border:"5px solid white",height:"320px",marginTop:"3rem"}}>
+        <Col
+          sm={3}
+          className="d-flex flex-column align-items-center"
+          style={{
+            border: "5px solid white",
+            height: "320px",
+            marginTop: "3rem",
+          }}
+        >
           <img src={img} style={{ height: "8rem", width: "fit-content" }} />
           <Button
             style={{ backgroundColor: "#2160fd", width: "fit-content" }}

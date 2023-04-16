@@ -8,10 +8,40 @@ import twitter from "../imgs/twitter.png";
 import facebook from "../imgs/facebook.png";
 import instagram from "../imgs/instagram.png";
 import logodark from "../imgs/logodark.jpeg";
-
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function MyFooter() {
   const [emailadd, setEmail] = useState("");
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+  const addSubscription = async () => {
+    if (!validateEmail(emailadd)) {
+      return toast.error("Invalid Email");
+    }
+    const res = await axios.post(
+      "/api/addSubscription",
+      { email: emailadd },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
+    if (res.data.status) {
+      toast.success("Subscription Added");
+      setEmail("");
+    } else {
+      toast.error(res.data.msg);
+    }
+  };
   return (
     <Container className="px-4 py-2 mt-4">
       <Row className="justify-content-center align-items-start">
@@ -52,7 +82,9 @@ function MyFooter() {
                   <img src={mobile.src} style={{ height: "20px" }} />
                   +91 8800102513 , 8130121639
                 </span>
-                <span className="mt-3" style={{ color : "yellow" }}>Connect with us on</span>
+                <span className="mt-3" style={{ color: "yellow" }}>
+                  Connect with us on
+                </span>
                 <span
                   className="d-flex flex-row align-items-center"
                   style={{ gap: "20px" }}
@@ -147,6 +179,9 @@ function MyFooter() {
               </Form.Group>
               <Button
                 style={{ backgroundColor: "#2160fd", fontFamily: "regular" }}
+                onClick={(e) => {
+                  addSubscription();
+                }}
               >
                 Submit
               </Button>

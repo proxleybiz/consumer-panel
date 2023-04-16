@@ -10,6 +10,7 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import { toast } from "react-toastify";
 
 function RegsiterCard({ switchFn }) {
   const router = useRouter();
@@ -43,15 +44,15 @@ function RegsiterCard({ switchFn }) {
       credentials.password.length < 7 ||
       credentials.name.trim() === ""
     ) {
-      return alert(
+      return toast.error(
         "Email, name and a password greater than 6 charachters is needed."
       );
     }
     if (!validateEmail(credentials.email)) {
-      return alert("Please enter a valid email");
+      return toast.error("Please enter a valid email");
     }
     if (credentials.password !== credentials.confirm) {
-      return alert("Passwords do not match.");
+      return toast.error("Passwords do not match.");
     }
     setLoading(true);
     userCtx.register(
@@ -61,7 +62,7 @@ function RegsiterCard({ switchFn }) {
         router.replace("/dashboard");
       },
       (err) => {
-        alert(err);
+        toast.error(err);
         setLoading(false);
       }
     );
@@ -117,61 +118,67 @@ function RegsiterCard({ switchFn }) {
           />
           Continue with Google
         </Button>
-        <p className="w-100 text-center fs-6 text-light" style={{marginTop:"10px"}}> OR </p>
-        <div>
-        <Form.Group className="mb-3 w-100">
-          <Form.Control
-            type="email"
-            placeholder="Enter Email"
-            value={credentials.email}
-            onChange={(e) => {
-              setCredentials({ ...credentials, email: e.target.value });
-            }}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3 w-100">
-          <Form.Control
-            type="name"
-            placeholder="Enter your name"
-            value={credentials.name}
-            onChange={(e) => {
-              setCredentials({ ...credentials, name: e.target.value });
-            }}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3 w-100">
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            value={credentials.password}
-            onChange={(e) => {
-              setCredentials({ ...credentials, password: e.target.value });
-            }}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3 w-100">
-          <Form.Control
-            type="password"
-            placeholder="Confirm Password"
-            value={credentials.confirm}
-            onChange={(e) => {
-              setCredentials({ ...credentials, confirm: e.target.value });
-            }}
-          />
-        </Form.Group>
-        
-        <Button
-          className="btn-hover w-100 mb-3"
-          style={{ fontFamily: "regular" }}
-          onClick={(e) => {
-            e.preventDefault();
-            register();
-          }}
-          disabled={loading}
+        <p
+          className="w-100 text-center fs-6 text-light"
+          style={{ marginTop: "10px" }}
         >
-          Register
-        </Button>
+          {" "}
+          OR{" "}
+        </p>
+        <div>
+          <Form.Group className="mb-3 w-100">
+            <Form.Control
+              type="email"
+              placeholder="Enter Email"
+              value={credentials.email}
+              onChange={(e) => {
+                setCredentials({ ...credentials, email: e.target.value });
+              }}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3 w-100">
+            <Form.Control
+              type="name"
+              placeholder="Enter your name"
+              value={credentials.name}
+              onChange={(e) => {
+                setCredentials({ ...credentials, name: e.target.value });
+              }}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3 w-100">
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={credentials.password}
+              onChange={(e) => {
+                setCredentials({ ...credentials, password: e.target.value });
+              }}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3 w-100">
+            <Form.Control
+              type="password"
+              placeholder="Confirm Password"
+              value={credentials.confirm}
+              onChange={(e) => {
+                setCredentials({ ...credentials, confirm: e.target.value });
+              }}
+            />
+          </Form.Group>
+
+          <Button
+            className="btn-hover w-100 mb-3"
+            style={{ fontFamily: "regular" }}
+            onClick={(e) => {
+              e.preventDefault();
+              register();
+            }}
+            disabled={loading}
+          >
+            Register
+          </Button>
         </div>
         <span
           className="d-flex flex-row align-items-center text-white mt-5"
@@ -180,7 +187,7 @@ function RegsiterCard({ switchFn }) {
           Already have an account?
           <Button
             onClick={switchFn}
-            style={{color:"yellow"}}
+            style={{ color: "yellow" }}
             className="p-0 m-0 bg-transparent border-0"
           >
             Login

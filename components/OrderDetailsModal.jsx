@@ -8,8 +8,15 @@ import { useRouter } from "next/router";
 import { CUSTOMIZATION, FILTER_ONE, FILTER_TWO } from "../utils/constants";
 import setAuthToken from "../utils/setAccessToken";
 import ReceiptIcon from "../imgs/tax.png";
+import { toast } from "react-toastify";
 
-function OrderDetailsModal({ show, handleClose, customization, filters }) {
+function OrderDetailsModal({
+  show,
+  handleClose,
+  customization,
+  filters,
+  recommendation,
+}) {
   const [loading, setLoading] = useState(true);
   const navigate = useRouter();
   const userCtx = useContext(userContext);
@@ -67,7 +74,7 @@ function OrderDetailsModal({ show, handleClose, customization, filters }) {
   const pay = async () => {
     try {
       if (cost * quantity <= 0) {
-        alert("Amount Must be greater than 0.");
+        toast.error("Amount Must be greater than 0.");
         return;
       }
       let s = true;
@@ -78,7 +85,7 @@ function OrderDetailsModal({ show, handleClose, customization, filters }) {
         return null;
       });
       if (!s) {
-        alert("Please Enter a proper address");
+        toast.error("Please Enter a proper address");
         return;
       }
       setLoading(true);
@@ -116,6 +123,7 @@ function OrderDetailsModal({ show, handleClose, customization, filters }) {
           product: { filters, customization: finalCustomizations },
           address: newAddress,
           quantity: quantity,
+          recommendation: recommendation,
         },
         {
           headers: {
@@ -125,7 +133,7 @@ function OrderDetailsModal({ show, handleClose, customization, filters }) {
         }
       );
       if (!res.data.status) {
-        return alert(res.data.msg);
+        return toast.error(res.data.msg);
       }
       const order = res.data.data.order;
       const ord_object = res.data.data.ord_object;
@@ -209,13 +217,16 @@ function OrderDetailsModal({ show, handleClose, customization, filters }) {
       const paymentObject = new window.Razorpay(options);
       paymentObject.open();
     } catch (err) {
-      alert(err.toString());
+      toast.error(err.toString());
     }
   };
   return (
     <Modal show={show} onHide={handleClose} fullscreen={false}>
-      <Modal.Header closeButton style={{background:"#333",color:"yellow"}}>
-        <img src={ReceiptIcon.src} style={{width:"30px",marginRight:"20px"}} />
+      <Modal.Header closeButton style={{ background: "#333", color: "yellow" }}>
+        <img
+          src={ReceiptIcon.src}
+          style={{ width: "30px", marginRight: "20px" }}
+        />
         <Modal.Title>View your order summary</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ fontFamily: "regular" }}>
