@@ -15,11 +15,11 @@ function MyNavbar({ mode = 0 }) {
     <Navbar bg="black" sticky="top">
       <Container fluid className="justify-content-center">
         <Navbar.Brand
-          href="/"
+          href="https://www.proxley.in/"
           className="fw-bold fs-1"
           style={{ color: "#2160fd" }}
         >
-          <img src={ProxleyLogoTest.src} alt="company-logo" height={60}/>
+          <img src={ProxleyLogoTest.src} alt="company-logo" height={60} />
         </Navbar.Brand>
         <Nav className="me-auto"></Nav>
 
