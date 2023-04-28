@@ -284,7 +284,7 @@ function OrderItem({ order }) {
           {" "}
           View Order{" "}
         </Button>
-        {pending && (
+        {pending && order?.monthly_repeat && (
           <p className="text-danger"> This Month Order Pending !! </p>
         )}
       </Card.Body>
