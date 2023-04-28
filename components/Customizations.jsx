@@ -227,6 +227,7 @@ function Customizations({
               flexDirection:
                 index + 1 === customization.length && "row-reverse",
               gap: "1rem",
+              marginRight: "1rem",
             }}
           >
             <Button
@@ -264,6 +265,14 @@ function Customizations({
                       ""
                     ) {
                       toast.error(customization[index].name);
+                      return;
+                    }
+                    if (
+                      customization[index].type === "NUMBER" &&
+                      parseInt(customization[index].selectedValue.toString()) <
+                        0
+                    ) {
+                      toast.error("Please enter a value greater than 0");
                       return;
                     }
                     setIndex(Math.min(index + 1, customization.length - 1));

@@ -79,8 +79,19 @@ function Profile() {
       profile,
       () => {
         setLoading(false);
+        toast.success("Profile Updated");
+        setEdit({
+          companyName: false,
+          companyGST: false,
+          businessCategory: false,
+          businessAddress: false,
+          designation: false,
+          accountNumber: false,
+          name: false,
+        });
       },
       (err) => {
+        toast.error(err.toString());
         setLoading(false);
         setProfile({
           companyName: userCtx.user?.companyName,
