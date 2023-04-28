@@ -34,8 +34,11 @@ const func = async (req, res) => {
       order_status: "pending",
       order_on: Date.now(),
       quantity: prev.quantity,
+      monthly_repeat: false,
     });
     await ord_object.save();
+    prev.last_repeat = Date.now();
+    await prev.save();
 
     const instance = new Razorpay({
       key_id: "rzp_test_PJfxwmlLINbRMG",

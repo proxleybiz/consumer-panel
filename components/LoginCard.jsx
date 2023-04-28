@@ -9,6 +9,7 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import { toast } from "react-toastify";
 
 function LoginCard({ switchFn }) {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
@@ -34,6 +35,7 @@ function LoginCard({ switchFn }) {
         router.replace("/dashboard");
       },
       (err) => {
+        toast.error(err.toString());
         setLoading(false);
       }
     );
@@ -63,42 +65,42 @@ function LoginCard({ switchFn }) {
       <Card.Body className="d-flex flex-column align-items-center">
         <Card.Title
           className="fs-1 authentication-heading"
-          style={{ fontFamily: "regular",marginBottom:'30px' }}
+          style={{ fontFamily: "regular", marginBottom: "30px" }}
         >
           Welcome Back!
         </Card.Title>
         <div>
-        <Form.Group className="mb-3 w-100">
-          <Form.Control
-            type="email"
-            placeholder="Enter Email"
-            value={credentials.email}
-            onChange={(e) => {
-              setCredentials({ ...credentials, email: e.target.value });
-            }}
-          />
-        </Form.Group>
+          <Form.Group className="mb-3 w-100">
+            <Form.Control
+              type="email"
+              placeholder="Enter Email"
+              value={credentials.email}
+              onChange={(e) => {
+                setCredentials({ ...credentials, email: e.target.value });
+              }}
+            />
+          </Form.Group>
 
-        <Form.Group className="mb-3 w-100">
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            value={credentials.password}
-            onChange={(e) => {
-              setCredentials({ ...credentials, password: e.target.value });
+          <Form.Group className="mb-3 w-100">
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={credentials.password}
+              onChange={(e) => {
+                setCredentials({ ...credentials, password: e.target.value });
+              }}
+            />
+          </Form.Group>
+          <Button
+            className="btn-hover w-100 mb-3"
+            style={{ fontFamily: "regular" }}
+            onClick={(e) => {
+              e.preventDefault();
+              login();
             }}
-          />
-        </Form.Group>
-        <Button
-          className="btn-hover w-100 mb-3"
-          style={{ fontFamily: "regular" }}
-          onClick={(e) => {
-            e.preventDefault();
-            login();
-          }}
-        >
-          LOGIN
-        </Button>
+          >
+            LOGIN
+          </Button>
         </div>
         <p className="w-100 text-center fs-6 text-light"> OR </p>
         <Button
@@ -125,7 +127,7 @@ function LoginCard({ switchFn }) {
           <Button
             onClick={switchFn}
             className="p-0 m-0 bg-transparent border-0"
-            style={{color:"yellow"}}
+            style={{ color: "yellow" }}
           >
             Regsiter
           </Button>

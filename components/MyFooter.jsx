@@ -128,13 +128,6 @@ function MyFooter() {
                   className="text-white fs-6"
                   style={{ fontFamily: "regular", width: "fit-content" }}
                 >
-                  Pricing
-                </Link>
-                <Link
-                  href="/"
-                  className="text-white fs-6"
-                  style={{ fontFamily: "regular", width: "fit-content" }}
-                >
                   Contact Us
                 </Link>
                 <Link

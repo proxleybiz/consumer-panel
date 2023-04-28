@@ -18,8 +18,15 @@ const func = async (req, res) => {
     if (!auth.res) {
       return res.json(resObj(false, null, auth.msg));
     }
-    const { amount, subTotal, product, address, quantity, recommendation } =
-      req.body;
+    const {
+      amount,
+      subTotal,
+      product,
+      address,
+      quantity,
+      recommendation,
+      monthly_repeat,
+    } = req.body;
     const ord_object = Order({
       userId: req.user._id,
       totalAmount: amount,
@@ -32,6 +39,8 @@ const func = async (req, res) => {
       order_on: Date.now(),
       quantity: parseInt(quantity),
       recommendation,
+      monthly_repeat: monthly_repeat,
+      last_repeat: Date.now(),
     });
     await ord_object.save();
 

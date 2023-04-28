@@ -20,6 +20,7 @@ function OrderDetailsModal({
   const [loading, setLoading] = useState(true);
   const navigate = useRouter();
   const userCtx = useContext(userContext);
+  const [monthly_repeat, setRepeat] = useState(false);
   const [newAddress, setNewAddress] = useState({
     addressTitle: "",
     lineOne: "",
@@ -124,6 +125,7 @@ function OrderDetailsModal({
           address: newAddress,
           quantity: quantity,
           recommendation: recommendation,
+          monthly_repeat,
         },
         {
           headers: {
@@ -251,7 +253,7 @@ function OrderDetailsModal({
         })}
         <p className="fs-5 mt-4">
           <b>Cost: </b>
-          {40 * quantity} ₹
+          {cost * quantity} ₹
         </p>
         <Form.Group>
           <Form.Label className="fs-5 mt-4"> Quantity </Form.Label>
@@ -264,6 +266,14 @@ function OrderDetailsModal({
             type="number"
           />
         </Form.Group>
+        <Form.Check
+          type="checkbox"
+          label={`Monthly Repeat`}
+          checked={monthly_repeat}
+          onChange={(e) => {
+            setRepeat(e.target.checked);
+          }}
+        />
         <p className="fs-5 mt-4">
           <b>Delivery Details </b>
         </p>

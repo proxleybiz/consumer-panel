@@ -93,7 +93,7 @@ function Customizations({
           </Form.Group>
         );
       }
-      case "TEXT": {
+      case "NUMBER": {
         return (
           <div
             className="mt-4 d-flex align-items-center"
@@ -111,6 +111,38 @@ function Customizations({
                 customization.find((c) => c.name === item.name)?.selectedValue
               }
               type="number"
+              style={{ flex: "1" }}
+              onChange={(e) => {
+                setCustomization(
+                  customization.map((c) => {
+                    if (c.name === item.name) {
+                      return { ...c, selectedValue: e.target.value.toString() };
+                    }
+                    return c;
+                  })
+                );
+              }}
+            />
+          </div>
+        );
+      }
+      case "TEXT": {
+        return (
+          <div
+            className="mt-4 d-flex align-items-center"
+            style={{ gap: "10px" }}
+          >
+            <p
+              className="text-white mb-0  fs-4"
+              style={{ width: "max-content" }}
+            >
+              {item.name}
+            </p>
+            <Form.Control
+              placeholder={item.name}
+              value={
+                customization.find((c) => c.name === item.name)?.selectedValue
+              }
               style={{ flex: "1" }}
               onChange={(e) => {
                 setCustomization(
@@ -189,7 +221,14 @@ function Customizations({
             variant="success"
           />
           {render(index)}
-          <Row style={{ gap: "1rem" }} className="justify-content-start">
+          <Row
+            className="justify-content-start"
+            style={{
+              flexDirection:
+                index + 1 === customization.length && "row-reverse",
+              gap: "1rem",
+            }}
+          >
             <Button
               style={{
                 backgroundColor: "red",
@@ -300,7 +339,11 @@ function Customizations({
             className="text-white mt-4"
             onClick={(e) => {
               e.preventDefault();
-              setRecShow(true);
+              if (filters.catOne === "PRINTING") {
+                return toast.warning("We are working on it right now");
+              } else {
+                setRecShow(true);
+              }
             }}
             disabled={index < customization.length - 1}
           >

@@ -31,6 +31,13 @@ const OrdersSchema = new mongoose.Schema({
   order_status: {
     type: String,
   },
+  monthly_repeat: {
+    type: Boolean,
+    default: false,
+  },
+  last_repeat: {
+    type: Number,
+  },
   recommendation: { type: Object },
   address: {
     addressTitle: {

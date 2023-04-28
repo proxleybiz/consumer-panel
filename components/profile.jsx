@@ -175,7 +175,11 @@ function Profile() {
                   <Form.Control
                     value={profile.name}
                     className=" w-100"
-                    style={{ fontFamily: "regular", background: "#f9eec4" }}
+                    style={{
+                      fontFamily: "regular",
+                      background: "#f9eec4",
+                      boxShadow: edit.name ? "0 0 5px 5px #2160fd" : "",
+                    }}
                     name="name"
                     placeholder="Username"
                     onChange={changeHandler}
@@ -203,7 +207,11 @@ function Profile() {
                   <Form.Control
                     value={profile.companyName}
                     className=" w-100"
-                    style={{ fontFamily: "regular", background: "#f9eec4" }}
+                    style={{
+                      fontFamily: "regular",
+                      background: "#f9eec4",
+                      boxShadow: edit.companyName ? "0 0 5px 5px #2160fd" : "",
+                    }}
                     name="companyName"
                     placeholder="Company Name"
                     onChange={changeHandler}
@@ -234,7 +242,11 @@ function Profile() {
                   <Form.Control
                     value={profile.companyGST}
                     className=" w-100"
-                    style={{ fontFamily: "regular", background: "#f9eec4" }}
+                    style={{
+                      fontFamily: "regular",
+                      background: "#f9eec4",
+                      boxShadow: edit.companyGST ? "0 0 5px 5px #2160fd" : "",
+                    }}
                     name="companyGST"
                     placeholder="Company GST"
                     onChange={changeHandler}
@@ -264,7 +276,13 @@ function Profile() {
                   <Form.Control
                     value={profile.businessCategory}
                     className=" w-100"
-                    style={{ fontFamily: "regular", background: "#f9eec4" }}
+                    style={{
+                      fontFamily: "regular",
+                      background: "#f9eec4",
+                      boxShadow: edit.businessCategory
+                        ? "0 0 5px 5px #2160fd"
+                        : "",
+                    }}
                     name="businessCategory"
                     placeholder="Business Category"
                     onChange={changeHandler}
@@ -294,7 +312,13 @@ function Profile() {
                   <Form.Control
                     value={profile.businessAddress}
                     className=" w-100"
-                    style={{ fontFamily: "regular", background: "#f9eec4" }}
+                    style={{
+                      fontFamily: "regular",
+                      background: "#f9eec4",
+                      boxShadow: edit.businessAddress
+                        ? "0 0 5px 5px #2160fd"
+                        : "",
+                    }}
                     name="businessAddress"
                     placeholder="Business Address"
                     onChange={changeHandler}
@@ -325,7 +349,11 @@ function Profile() {
                   <Form.Control
                     value={profile.designation}
                     className=" w-100"
-                    style={{ fontFamily: "regular", background: "#f9eec4" }}
+                    style={{
+                      fontFamily: "regular",
+                      background: "#f9eec4",
+                      boxShadow: edit.designation ? "0 0 5px 5px #2160fd" : "",
+                    }}
                     name="designation"
                     placeholder="Designation"
                     onChange={changeHandler}
@@ -355,7 +383,13 @@ function Profile() {
                   <Form.Control
                     value={profile.accountNumber}
                     className=" w-100"
-                    style={{ fontFamily: "regular", background: "#f9eec4" }}
+                    style={{
+                      fontFamily: "regular",
+                      background: "#f9eec4",
+                      boxShadow: edit.accountNumber
+                        ? "0 0 5px 5px #2160fd"
+                        : "",
+                    }}
                     name="accountNumber"
                     placeholder="Bank Account Number"
                     onChange={changeHandler}

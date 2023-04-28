@@ -19,6 +19,8 @@ function OrderItem({ order }) {
   const date = new Date(order?.order_on).toLocaleDateString();
   const [show, setShow] = useState(false);
   let value = 0;
+  const curr = Date.now();
+  const pending = (order?.last_repeat - curr) / (1000 * 60 * 60 * 24) >= 30;
   switch (order.order_status) {
     case "ordered":
       {
@@ -282,6 +284,9 @@ function OrderItem({ order }) {
           {" "}
           View Order{" "}
         </Button>
+        {pending && (
+          <p className="text-danger"> This Month Order Pending !! </p>
+        )}
       </Card.Body>
       <OrderInfoModal
         show={show}
