@@ -133,15 +133,7 @@ const PdfDocument = ({ invoicedata }) => {
             return (
               <Fragment key={key} className="d-flex" style={{ gap: "20px" }}>
                 <Text> {item.name}: </Text>
-                <Image
-                  style={styles.logo}
-                  src={{
-                    uri: item.value,
-                    method: "GET",
-                    headers: { "Cache-Control": "no-cache" },
-                    body: "",
-                  }}
-                />
+                <Image style={styles.logo} src={item.value} />
               </Fragment>
             );
           } else if (item.type === "COLOR") {
@@ -151,12 +143,13 @@ const PdfDocument = ({ invoicedata }) => {
                 {item.value}
               </Fragment>
             );
+          } else {
+            return (
+              <Text key={key} className="fs-6">
+                {item.name}: {item.value}
+              </Text>
+            );
           }
-          return (
-            <Text key={key} className="fs-6">
-              {item.name}: {item.value}
-            </Text>
-          );
         })}
       </Page>
     </Document>
