@@ -96,13 +96,14 @@ function OrderDetailsModal({
         if (item.type === "FILE") {
           const res = await uploadImage(
             item.selectedValue,
-            `${userCtx.user?._id}_${Date.now()}`
+            `${userCtx.user?._id}_${Date.now()}_${item.selectedValue.name}`
           );
           item.selectedValue = res;
         }
         finalCustomizations.push({
           name: item.name,
           value: item.selectedValue,
+          type: item.type,
         });
       }
       if (

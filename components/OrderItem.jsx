@@ -10,6 +10,8 @@ import userContext from "../context/user/userContext";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import OrderInfoModal from "./OrderInfoModal";
+import dynamic from "next/dynamic";
+const Temp = dynamic(() => import("./Temp.jsx"), { ssr: false });
 
 function OrderItem({ order }) {
   const [loading, setLoading] = useState(false);
@@ -288,7 +290,8 @@ function OrderItem({ order }) {
           <p className="text-danger"> This Month Order Pending !! </p>
         )}
       </Card.Body>
-      <OrderInfoModal
+      {/* <OrderInfoModal /> */}
+      <Temp
         show={show}
         handleClose={() => {
           setShow(false);
