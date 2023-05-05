@@ -6,6 +6,7 @@ import {
   ADD_ORDERS,
   GET_ORDERS,
   GET_USER,
+  LOAD_SHOP,
   UPDATE_USER,
 } from "../types";
 import UserContext from "./userContext";
@@ -16,6 +17,9 @@ function UserState(props) {
     user: null,
     loading: false,
     orders: [],
+    customization: [],
+    filterOne: [],
+    filterTwo: [],
   };
   const config = {
     headers: {
@@ -393,7 +397,27 @@ function UserState(props) {
       }
     } catch (err) {
       if (error) {
-        error(err);
+        error(err.toString());
+      }
+    }
+  };
+
+  const loadShop = async (success = null, error = null) => {
+    try {
+      const res = await axios.get("/api/loadShop");
+      if (res.data.status) {
+        dispatch({ type: LOAD_SHOP, payload: res.data.data });
+        if (success) {
+          success();
+        }
+      } else {
+        if (error) {
+          error(err.toString());
+        }
+      }
+    } catch (err) {
+      if (error) {
+        error(err.toString());
       }
     }
   };
@@ -403,6 +427,9 @@ function UserState(props) {
         user: state.user,
         loading: state.loading,
         orders: state.orders,
+        filterOne: state.filterOne,
+        filterTwo: state.filterTwo,
+        customization: state.customization,
         getUser,
         login,
         verifyNumber,
@@ -415,6 +442,7 @@ function UserState(props) {
         addAddress,
         deleteAddress,
         updateAddress,
+        loadShop,
       }}
     >
       {props.children}

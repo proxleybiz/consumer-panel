@@ -32,7 +32,6 @@ const func = async (req, res) => {
     await order.save();
     res.json(resObj(true, order, "Order Validated"));
   } catch (err) {
-    console.log(err);
     return res.json(resObj(false, null, err.toString()));
   }
 };

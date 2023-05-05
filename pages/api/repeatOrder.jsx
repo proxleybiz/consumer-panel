@@ -54,7 +54,6 @@ const func = async (req, res) => {
     const order = await instance.orders.create(ord_options);
     res.json(resObj(true, { order, ord_object }, "Order created"));
   } catch (err) {
-    console.log(err);
     return res.json(resObj(false, null, err.toString()));
   }
 };

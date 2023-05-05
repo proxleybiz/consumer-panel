@@ -43,9 +43,9 @@ function OrderDetailsModal({
       return;
     }
     let cost = 0;
-    const t1 = FILTER_ONE.find((i) => i.name === filters.catOne);
+    const t1 = userCtx.filterOne.find((i) => i.name === filters.catOne);
     cost += t1 ? t1.cost : 0;
-    let t2 = FILTER_TWO.find((i) => i.category === filters.catOne);
+    let t2 = userCtx.filterTwo.find((i) => i.category === filters.catOne);
     if (t2) {
       t2 = t2.items.find((i) => i.name === filters.catTwo);
       cost += t2 ? t2.cost : 0;
@@ -55,7 +55,9 @@ function OrderDetailsModal({
       }
     }
 
-    const cust = CUSTOMIZATION.find((i) => i.category === filters.catOne);
+    const cust = userCtx.customization.find(
+      (i) => i.category === filters.catOne
+    );
     if (cust) {
       for (let i = 0; i < customization.length; i++) {
         let q = customization[i];

@@ -27,7 +27,6 @@ const func = async (req, res) => {
     }
     res.json(resObj(true, order, "Order Fetched"));
   } catch (err) {
-    console.log(err);
     return res.json(resObj(false, null, err.toString()));
   }
 };

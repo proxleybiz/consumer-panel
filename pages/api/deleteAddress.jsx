@@ -22,7 +22,6 @@ const func = async (req, res) => {
       return res.json(resObj(false, null, auth.msg));
     }
     const { id } = req.body;
-    console.log(id);
     let user = await User.findById(req.user._id);
     if (!user) {
       return res.json(resObj(false, null, "User Not Found"));

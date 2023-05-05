@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useContext } from "react";
 import OrderDetailsModal from "./OrderDetailsModal";
 import RecommendationModal from "./RecommendationModal";
 import ThankYouModal from "./ThankYouModal";
@@ -8,6 +8,7 @@ import { FILTER_ONE, PRINTING } from "../utils/constants";
 import left from "../imgs/left-arrow.png";
 import right from "../imgs/right-arrow.png";
 import { toast } from "react-toastify";
+import userContext from "../context/user/userContext";
 
 function Customizations({
   filters,
@@ -17,7 +18,8 @@ function Customizations({
   index,
   setIndex,
 }) {
-  const img = FILTER_ONE.find((i) => i.name === filters.catOne)?.img;
+  const userCtx = useContext(userContext);
+  const img = userCtx.filterOne.find((i) => i.name === filters.catOne)?.img;
   const [show, setShow] = useState(false);
   const [recShow, setRecShow] = useState(false);
   const [recommendation, setRecommendation] = useState(null);

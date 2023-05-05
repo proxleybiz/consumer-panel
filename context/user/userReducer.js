@@ -3,6 +3,7 @@ import {
   ADD_ORDERS,
   GET_ORDERS,
   GET_USER,
+  LOAD_SHOP,
   UPDATE_USER,
 } from "../types";
 
@@ -22,6 +23,14 @@ const userReducer = (state, action) => {
     }
     case ADD_ADDRESS: {
       return { ...state, user: { ...state.user, address: action.payload } };
+    }
+    case LOAD_SHOP: {
+      return {
+        ...state,
+        customization: action.payload.customization,
+        filterOne: action.payload.filterOne,
+        filterTwo: action.payload.filterTwo,
+      };
     }
     default:
       return state;
